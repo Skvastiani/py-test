@@ -1,0 +1,22 @@
+version: '3'
+services:
+  web:
+    build: .
+    command: python run.py
+    volumes:
+      - .:/app
+    ports:
+      - "5000:5000"
+    depends_on:
+      - redis
+  worker:
+    build: .
+    command: celery -A crypto_signals.tasks worker --loglevel=info
+    volumes:
+      - .:/app
+    depends_on:
+      - redis
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
