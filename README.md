@@ -1,6 +1,10 @@
-# Demo Application
+# Crypto Trading Signals Platform
 
-This repository contains a minimal demonstration app that uses **Flask**, **SQLAlchemy**, and **Celery**. It stores users in a SQLite database and processes a background task whenever a user is created.
+This project provides a small crypto trading signals API.  It exposes REST
+endpoints for registering users and retrieving calculated signals for a trading
+pair.  Price data is fetched from public APIs and indicators such as moving
+averages and RSI are computed in background Celery tasks.  Signals can also be
+pushed over WebSockets using **Flask-SocketIO**.
 
 ## Requirements
 
@@ -12,7 +16,7 @@ pip install -r requirements.txt
 
 ## Running the application
 
-1. Ensure Redis is running on `localhost:6379` for Celery.
+1. Ensure Redis is available (Docker Compose provides a ready to use setup).
 2. Start the Flask application:
 
 ```bash
@@ -22,7 +26,7 @@ python run.py
 3. In a separate terminal, run Celery:
 
 ```bash
-celery -A demo.tasks worker --loglevel=info
+celery -A crypto_signals.tasks worker --loglevel=info
 ```
 
-You can then send `POST /users` requests with JSON `{"name": "Alice"}` to create users and trigger the background task.
+You can then send `POST /register` requests with JSON `{"email": "user@example.com"}` to create users.  Signals for a pair can be retrieved from `/signals/<pair>`.

@@ -3,3 +3,5 @@ SQLAlchemy
 celery
 redis
 pytest
+requests
+Flask-SocketIO
