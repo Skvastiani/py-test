@@ -30,3 +30,35 @@ celery -A crypto_signals.tasks worker --loglevel=info
 ```
 
 You can then send `POST /register` requests with JSON `{"email": "user@example.com"}` to create users.  Signals for a pair can be retrieved from `/signals/<pair>`.
+
+## Running locally on macOS
+
+1. Install [Homebrew](https://brew.sh/) if it is not already available.
+2. Install Python 3 and Redis:
+
+```bash
+brew install python redis
+brew services start redis  # start Redis as a background service
+```
+
+3. (Optional) create a virtual environment:
+
+```bash
+python3 -m venv venv
+source venv/bin/activate
+```
+
+4. Install the required Python packages:
+
+```bash
+pip install -r requirements.txt
+```
+
+5. Start the Flask application and the Celery worker in separate terminals:
+
+```bash
+python run.py
+celery -A crypto_signals.tasks worker --loglevel=info
+```
+
+Once running, the API will be available at [http://localhost:5000](http://localhost:5000).
